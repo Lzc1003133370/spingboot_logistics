@@ -1,5 +1,7 @@
 package com.entor.controller;
 
+import java.util.Map;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.SimpleHash;
@@ -25,6 +27,14 @@ public class MemberController {
 	@Autowired
 	private MemberMapper memberMapper;
 
+	@RequestMapping("/index")
+	public String index(Map<String, Object> map) {
+		Subject sub = SecurityUtils.getSubject();
+		String username = sub.getPrincipal().toString();
+		map.put("username", username);
+		return "/index";
+	}
+
 	@RequestMapping("/login")
 	public String login() {
 		return "/login";
@@ -46,7 +56,7 @@ public class MemberController {
 		Subject sub = SecurityUtils.getSubject();
 		try {
 			sub.login(token);
-			return "/hellow";
+			return "redirect:index";
 		} catch (Exception e) {
 			return "redirect:login";
 		}

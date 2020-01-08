@@ -38,6 +38,8 @@ public class ShiroConfig {
 		// 拦截器.
 		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
 		// 配置静态资源允许访问
+		filterChainDefinitionMap.put("/layui/**", "anon");
+		filterChainDefinitionMap.put("/image/**", "anon");
 		filterChainDefinitionMap.put("/js/**", "anon");
 		filterChainDefinitionMap.put("/css/**", "anon");
 		filterChainDefinitionMap.put("/index", "anon");
