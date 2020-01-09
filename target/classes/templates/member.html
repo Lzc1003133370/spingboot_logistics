@@ -1,9 +1,171 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title></title>
-	</head>
-	<body>
-	</body>
+
+<head>
+<meta charset="UTF-8" />
+<title>会员显示</title>
+<link rel="stylesheet" href="../static/layui/css/layui.css"
+	th:href="@{/layui/css/layui.css}" />
+<script type="text/javascript" src="../static/layui/layui.js"
+	th:src="@{/layui/layui.js}"></script>
+</head>
+
+<body>
+
+	<table class="layui-hide" id="test" lay-filter="test"></table>
+
+	<script type="text/html" id="toolbarDemo">
+			<div class="layui-btn-container">
+				<!-- 添加按钮 -->
+				<a class="layui-btn layui-btn-sm" id="add-member-btn">添加会员</a>
+				<a class="layui-btn layui-btn-sm" id="deleteMore_btn">批量删除会员</a>
+				<button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+				<button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+				<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+			</div>
+		</script>
+	<script type="text/html" id="barDemo">
+			<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+		</script>
+
+	<!-- 添加学生弹出层 -->
+	<div id="member-layer" style="display: none; padding: 20px">
+		<form id="member-form" class="layui-form layui-form-pane"
+			lay-filter="member-form">
+			<input type="hidden" name="memberId" class="layui-input" />
+			<div class="layui-form-item">
+				<label class="layui-form-label">姓名</label>
+				<div class="layui-input-block">
+					<input type="text" name="memberName" class="layui-input"
+						lay-verify="required" autocomplete="off" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">会员用户名</label>
+				<div class="layui-input-block">
+					<input type="text" name="memberUsername" class="layui-input"
+						lay-verify="required" autocomplete="off" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">会员密码</label>
+				<div class="layui-input-block">
+					<input type="text" name="memberPassword" class="layui-input"
+						lay-verify="required" autocomplete="off" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">联系方式</label>
+				<div class="layui-input-block">
+					<input type="text" name="memberPhone" class="layui-input"
+						lay-verify="required" autocomplete="off" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<label class="layui-form-label">会员地址</label>
+				<div class="layui-input-block">
+					<input type="text" name="memberAddress" class="layui-input"
+						lay-verify="required" autocomplete="off" />
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					<button class="layui-btn" lay-submit=""
+						lay-filter="meber-form-submit">提交</button>
+					<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+	<script>
+		layui.use('table', function() {
+			var table = layui.table;
+			table.render({
+				elem : '#test',
+				height : 'full-20',
+				url : '/member/queryByPage',
+				method : 'post',
+				toolbar : '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
+				defaultToolbar : [ 'filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+					title : '提示',
+					layEvent : 'LAYTABLE_TIPS',
+					icon : 'layui-icon-tips'
+				} ],
+				title : '用户数据表',
+				cols : [ [ {
+					type : 'checkbox',
+					fixed : 'left'
+				}, {
+					field : 'memberUsername',
+					title : '用户名',
+					edit : 'text'
+				}, {
+					field : 'memberName',
+					title : '姓名'
+				}, {
+					field : 'memberPhone',
+					title : '联系方式'
+				}, {
+					field : 'memberAddress',
+					title : '地址'
+				}, {
+					fixed : 'right',
+					title : '操作',
+					toolbar : '#barDemo',
+					width : 150
+				} ] ],
+				page : true
+			});
+
+			//头工具栏事件
+			table.on('toolbar(test)', function(obj) {
+				var checkStatus = table.checkStatus(obj.config.id);
+				switch (obj.event) {
+				case 'getCheckData':
+					var data = checkStatus.data;
+					layer.alert(JSON.stringify(data));
+					break;
+				case 'getCheckLength':
+					var data = checkStatus.data;
+					layer.msg('选中了：' + data.length + ' 个');
+					break;
+				case 'isAll':
+					layer.msg(checkStatus.isAll ? '全选' : '未全选');
+					break;
+
+				//自定义头工具栏右侧图标 - 提示
+				case 'LAYTABLE_TIPS':
+					layer.alert('这是工具栏右侧自定义的一个图标按钮');
+					break;
+				}
+				;
+			});
+
+			//监听行工具事件
+			table.on('tool(test)', function(obj) {
+				var data = obj.data;
+				//console.log(obj)
+				if (obj.event === 'del') {
+					layer.confirm('真的删除行么', function(index) {
+						obj.del();
+						layer.close(index);
+					});
+				} else if (obj.event === 'edit') {
+					layer.prompt({
+						formType : 2,
+						value : data.email
+					}, function(value, index) {
+						obj.update({
+							email : value
+						});
+						layer.close(index);
+					});
+				}
+			});
+		});
+	</script>
+</body>
+
 </html>
