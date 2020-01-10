@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.entor.entity.Member;
 import com.entor.service.IMemberService;
@@ -33,6 +34,11 @@ public class MemberController {
 
 	@Autowired
 	private IMemberService memberService;
+
+	@RequestMapping("/member.html")
+	public ModelAndView loadingpage() {
+		return new ModelAndView("member");
+	}
 
 	@RequestMapping("/index")
 	public String index(Map<String, Object> map) {
