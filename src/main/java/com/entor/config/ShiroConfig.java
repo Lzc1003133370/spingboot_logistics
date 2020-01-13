@@ -43,12 +43,12 @@ public class ShiroConfig {
 		filterChainDefinitionMap.put("/js/**", "anon");
 		filterChainDefinitionMap.put("/css/**", "anon");
 		filterChainDefinitionMap.put("/index", "anon");
-		filterChainDefinitionMap.put("/member/login", "anon");
-		filterChainDefinitionMap.put("/member/loginCheck", "anon");
+		filterChainDefinitionMap.put("/ym/login", "anon");
+		filterChainDefinitionMap.put("/ym/loginCheck", "anon");
 		// <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
 		filterChainDefinitionMap.put("/**", "anon");
 		// 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-		shiroFilterFactoryBean.setLoginUrl("/member/login");
+		shiroFilterFactoryBean.setLoginUrl("/ym/login");
 		// 未授权界面;
 		shiroFilterFactoryBean.setUnauthorizedUrl("/403");
 		Map<String, Filter> filters = new HashMap<String, Filter>();
