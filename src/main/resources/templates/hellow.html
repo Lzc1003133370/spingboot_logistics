@@ -3,8 +3,87 @@
 <head>
 <meta charset="UTF-8"/>
 <title>Insert title here</title>
+<link rel="stylesheet" href="../static/layui/css/layui.css"
+	th:href="@{/layui/css/layui.css}" />
+<script type="text/javascript" src="../static/layui/layui.js"
+	th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" src="../static/layui/jquery.min.js"
+	th:src="@{/layui/jquery.min.js}"></script>
 </head>
 <body>
-	<h1>登录成功！</h1>欢迎：&nbsp;&nbsp;<a href="/member/logout">注销</a>
+	<div class="layui-fluid">
+		<div class="layui-row layui-col-space20">
+			<div class="layui-col-md3"></div>
+			<div class="layui-col-md6">
+				<blockquote class="layui-elem-quote" style="margin-top: 100px;">地址选择插件</blockquote>
+				<!-- 地址选择插件 start -->
+				<form class="layui-form">
+					<div class="layui-row">
+						<div class="layui-col-sm4">
+							<div class="layui-inline layui-select-default" style="width: 99%;">
+								<select name="province" data-area="广东省" lay-filter="province">
+									<option value="">选择省</option>
+								</select> 
+							</div>
+						</div>
+						<div class="layui-col-sm4">
+							<div class="layui-inline layui-select-default" style="width: 99%;">
+								<select name="city" data-area="广州市" lay-filter="city">
+									<option value="">选择市</option>
+								</select> 
+							</div>
+						</div>
+						<div class="layui-col-sm4">
+							<div class="layui-inline layui-select-default" style="width: 99%;">
+								<select name="district" data-area="天河区" lay-filter="district">
+									<option value="">选择区</option>
+								</select> 
+							</div>
+						</div>
+					</div>
+					<p style="margin-top: 40px;"><button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button></p>
+				</form>
+				<!-- 地址选择插件 end -->
+			</div>
+			<div class="layui-col-md3"></div>
+		</div>
+	</div>
+	<script type="text/javascript" src="../static/picker/city-picker.js" th:src="@{/picker/city-picker.js}"></script>
+	<script type="text/javascript">
+		//config的设置是全局的
+		layui.config({
+			base: '../static/picker/' //假设这是你存放拓展模块的根目录
+		}).extend({ //设定模块别名
+			common: 'common' //如果 common.js 是在根目录，也可以不用设定别名
+		});
+
+		layui.use(['form', 'common'], function(){
+			var common = layui.common,
+				form = layui.form;
+			//do something...
+			//三级地址联动
+			common.showCity('province', 'city', 'district');
+
+			//监听提交
+			form.on('submit(formDemo)', function(data){
+				var resData = data.field,
+					province = resData.province,
+					city = resData.city,
+					district = resData.district;
+
+				console.log(province, city, district)
+
+				// 通过地址code码获取地址名称
+				var address = common.getCity({
+					province, 
+					city,
+					district
+				});
+				console.log(address);
+				return false;
+			});
+			
+		});
+	</script>
 </body>
 </html>

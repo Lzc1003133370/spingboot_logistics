@@ -11,12 +11,14 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.entor.entity.Member;
 import com.entor.entity.Result;
 import com.entor.service.IMemberService;
@@ -43,9 +45,17 @@ public class MemberController {
 	@ResponseBody
 	public Map<String, Object> queryByPage(
 			@RequestParam(value = "limit", required = false, defaultValue = "20") int limit,
-			@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+			@RequestParam(value = "page", required = false, defaultValue = "1") int page, Member member) {
 		PageHelper.startPage(page, limit);
-		List<Member> list = memberService.list();
+		// 模糊查询语句
+		QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
+		if (!StringUtils.isEmpty(member.getMemberUsername())) {
+			queryWrapper.like("Member_username", member.getMemberUsername());
+		}
+		if (!StringUtils.isEmpty(member.getMemberName())) {
+			queryWrapper.like("Member_name", member.getMemberName());
+		}
+		List<Member> list = memberService.list(queryWrapper);
 		PageInfo<Member> pageInfo = new PageInfo<>(list);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", 0);

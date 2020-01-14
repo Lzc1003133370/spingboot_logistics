@@ -11,7 +11,21 @@
 </head>
 
 <body>
-
+	<div class="layui-form-item">
+		  <div class="layui-inline">
+		    <label class="layui-form-label">用户名</label>
+		    <div class="layui-input-inline" style="width: 150px;">
+		      <input type="text" id="search_username" autocomplete="off" class="layui-input">
+		  	</div>
+		    <label class="layui-form-label">会员姓名</label>
+		    <div class="layui-input-inline" style="width: 100px;">
+		      <input type="text" id="search_name" autocomplete="off" class="layui-input">
+		    </div>
+		    <div class="layui-inline">
+		      <button class="layui-btn layui-btns layui-btn-normal" id="search_btn">搜索</button>
+		 	</div>
+		  </div>
+	</div>
 	<table class="layui-hide" id="member-tab" lay-filter="member-tab"></table>
 
 		<script type="text/html" id="toolbarDemo">
@@ -92,18 +106,6 @@
 				layer = layui.layer;
 				var form = layui.form;
 				var laydate = layui.laydate;
-				laydate.render({
-					elem : '#studentListen' //或 elem: document.getElementById('test')、elem: lay('#test') 等
-				});
-				laydate.render({
-					elem : '#studentListen2' //或 elem: document.getElementById('test')、elem: lay('#test') 等
-				});
-				laydate.render({
-					elem : '#search_beginDate' //或 elem: document.getElementById('test')、elem: lay('#test') 等
-				});
-				laydate.render({
-					elem : '#search_endDate' //或 elem: document.getElementById('test')、elem: lay('#test') 等
-				});
 				//记录选中的数据:做缓存使用,作为参数传递给后台
 		        var ids = new Array();
 		        //当前表格中的全部数据:在表格的checkbox全选的时候没有得到数据, 因此用全局存放变量
@@ -111,7 +113,7 @@
 				// 显示所有会员
 				table.render({
 					elem : '#member-tab',
-					height : 'full-25',
+					height : 'full-73',
 					url : '/member/queryByPage',
 					method : 'post',
 					toolbar : '#toolbarDemo', //开启头部工具栏，并为其绑定左侧模板
@@ -291,11 +293,10 @@
 				
 				$("#search_btn").click(function(){
 					table.reload('member-tab', {
-						  url: "/member/queryByPage"
-						  ,where: {
-							  beginDate:$('#search_beginDate').val(),
-							  endDate:$('#search_endDate').val(),
-							  name:$('#search_name').val()
+						  url: "/member/queryByPage",
+						  where: {
+							  memberUsername:$('#search_username').val(),
+							  memberName:$('#search_name').val()
 						  }
 						  ,page: {
 						    curr: 1
