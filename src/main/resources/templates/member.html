@@ -8,6 +8,8 @@
 	th:href="@{/layui/css/layui.css}" />
 <script type="text/javascript" src="../static/layui/layui.js"
 	th:src="@{/layui/layui.js}"></script>
+<script type="text/javascript" src="../static/layui/jquery.min.js"
+	th:src="@{/layui/jquery.min.js}"></script>
 </head>
 
 <body>
@@ -84,6 +86,32 @@
 				</div>
 			</div>
 			<div class="layui-form-item">
+				<label class="layui-form-label">地址</label>
+				<div class="layui-input-block">
+						<div class="layui-col-sm4">
+							<div class="layui-inline layui-select-default" style="width: 110px;">
+								<select name="province" data-area="广东省" lay-filter="province">
+									<option value="">选择省</option>
+								</select> 
+							</div>
+						</div>
+						<div class="layui-col-sm4">
+							<div class="layui-inline layui-select-default" style="width: 110px;">
+								<select name="city" data-area="广州市" lay-filter="city">
+									<option value="">选择市</option>
+								</select> 
+							</div>
+						</div>
+						<div class="layui-col-sm4">
+							<div class="layui-inline layui-select-default" style="width: 110px;">
+								<select name="district" data-area="天河区" lay-filter="district">
+									<option value="">选择区</option>
+								</select> 
+							</div>
+						</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
 				<div class="layui-input-block">
 					<button class="layui-btn" lay-submit=""
 						lay-filter="meber-form-submit">提交</button>
@@ -92,6 +120,7 @@
 			</div>
 		</form>
 	</div>
+	<script type="text/javascript" src="../static/picker/city-picker.js" th:src="@{/picker/city-picker.js}"></script>
 	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 	<script>
 	var title = "";
@@ -385,6 +414,23 @@
 		}
 		return flag;
 	}
+	
+	//config的设置是全局的
+	layui.config({
+		base: '../static/picker/' //假设这是你存放拓展模块的根目录
+	}).extend({ //设定模块别名
+		common: 'common' //如果 common.js 是在根目录，也可以不用设定别名
+	});
+
+	layui.use(['form', 'common'], function(){
+		var common = layui.common,
+			form = layui.form;
+		//do something...
+		//三级地址联动
+		common.showCity('province', 'city', 'district');
+		
+		
+	});
 	</script>
 </body>
 
