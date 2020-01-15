@@ -126,9 +126,7 @@ public class CodeGenerator {
 		// strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
 		// 写于父类中的公共字段
 		// strategy.setSuperEntityColumns("id");
-		strategy.setInclude(new String[] { "auth", "driver", "driver_truck", "goods", "member", "member_role", "order",
-				"out_of_stock", "role", "role_auth", "route", "staff", "staff_role", "stock", "truck", "users",
-				"warehouse", "warehousing" });
+		strategy.setInclude(new String[] { "waybill" });
 		strategy.setControllerMappingHyphenStyle(true);
 		mpg.setStrategy(strategy);
 		// mpg.setTemplateEngine(new FreemarkerTemplateEngine());

@@ -14,23 +14,26 @@
 
 <body>
 	<div class="layui-form-item">
-		  <div class="layui-inline">
-		    <label class="layui-form-label">用户名</label>
-		    <div class="layui-input-inline" style="width: 150px;">
-		      <input type="text" id="search_username" autocomplete="off" class="layui-input">
-		  	</div>
-		    <label class="layui-form-label">会员姓名</label>
-		    <div class="layui-input-inline" style="width: 100px;">
-		      <input type="text" id="search_name" autocomplete="off" class="layui-input">
-		    </div>
-		    <div class="layui-inline">
-		      <button class="layui-btn layui-btns layui-btn-normal" id="search_btn">搜索</button>
-		 	</div>
-		  </div>
+		<div class="layui-inline">
+			<label class="layui-form-label">用户名</label>
+			<div class="layui-input-inline" style="width: 150px;">
+				<input type="text" id="search_username" autocomplete="off"
+					class="layui-input">
+			</div>
+			<label class="layui-form-label">会员姓名</label>
+			<div class="layui-input-inline" style="width: 100px;">
+				<input type="text" id="search_name" autocomplete="off"
+					class="layui-input">
+			</div>
+			<div class="layui-inline">
+				<button class="layui-btn layui-btns layui-btn-normal"
+					id="search_btn">搜索</button>
+			</div>
+		</div>
 	</div>
 	<table class="layui-hide" id="member-tab" lay-filter="member-tab"></table>
 
-		<script type="text/html" id="toolbarDemo">
+	<script type="text/html" id="toolbarDemo">
 			<div class="layui-btn-container">
 				<!-- 添加按钮 -->
 				<a class="layui-btn layui-btn-sm" id="add-member_btn" lay-event="add-member_btn">添加会员</a>
@@ -40,7 +43,7 @@
 				<button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
 			</div>
 		</script>
-		<script type="text/html" id="barDemo">
+	<script type="text/html" id="barDemo">
 			<a class="layui-btn layui-btn-xs" lay-event="updateMember">编辑</a>
 			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="deleteMember">删除</a>
 		</script>
@@ -50,6 +53,7 @@
 		<form id="member-form" class="layui-form layui-form-pane"
 			lay-filter="member-form">
 			<input type="hidden" name="memberId" class="layui-input" />
+			<input type="hidden" name="memberAddress" class="layui-input" />
 			<div class="layui-form-item">
 				<label class="layui-form-label">会员姓名</label>
 				<div class="layui-input-block">
@@ -78,37 +82,40 @@
 						lay-verify="required" autocomplete="off" />
 				</div>
 			</div>
-			<div class="layui-form-item">
+			<!-- <div class="layui-form-item">
 				<label class="layui-form-label">会员地址</label>
 				<div class="layui-input-block">
 					<input type="text" name="memberAddress" class="layui-input"
 						lay-verify="required" autocomplete="off" />
 				</div>
-			</div>
+			</div> -->
 			<div class="layui-form-item">
-				<label class="layui-form-label">地址</label>
+				<label class="layui-form-label">会员地址</label>
 				<div class="layui-input-block">
-						<div class="layui-col-sm4">
-							<div class="layui-inline layui-select-default" style="width: 110px;">
-								<select name="province" data-area="广东省" lay-filter="province">
-									<option value="">选择省</option>
-								</select> 
-							</div>
+					<div class="layui-col-sm4">
+						<div class="layui-inline layui-select-default"
+							style="width: 110px;">
+							<select name="province" data-area="选择省" lay-filter="province">
+								<option value="">选择省</option>
+							</select>
 						</div>
-						<div class="layui-col-sm4">
-							<div class="layui-inline layui-select-default" style="width: 110px;">
-								<select name="city" data-area="广州市" lay-filter="city">
-									<option value="">选择市</option>
-								</select> 
-							</div>
+					</div>
+					<div class="layui-col-sm4">
+						<div class="layui-inline layui-select-default"
+							style="width: 110px;">
+							<select name="city" data-area="广州市" lay-filter="city">
+								<option value="">选择市</option>
+							</select>
 						</div>
-						<div class="layui-col-sm4">
-							<div class="layui-inline layui-select-default" style="width: 110px;">
-								<select name="district" data-area="天河区" lay-filter="district">
-									<option value="">选择区</option>
-								</select> 
-							</div>
+					</div>
+					<div class="layui-col-sm4">
+						<div class="layui-inline layui-select-default"
+							style="width: 110px;">
+							<select name="district" data-area="天河区" lay-filter="district">
+								<option value="">选择区</option>
+							</select>
 						</div>
+					</div>
 				</div>
 			</div>
 			<div class="layui-form-item">
@@ -120,15 +127,28 @@
 			</div>
 		</form>
 	</div>
-	<script type="text/javascript" src="../static/picker/city-picker.js" th:src="@{/picker/city-picker.js}"></script>
+	<script type="text/javascript" src="../static/picker/city-picker.js"
+		th:src="@{/picker/city-picker.js}"></script>
 	<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 	<script>
+	//config的设置是全局的
+	layui.config({
+		base: '../picker/'
+		//假设这是你存放拓展模块的根目录
+	}).extend({ //设定模块别名
+		common: 'common' //如果 common.js 是在根目录，也可以不用设定别名
+	});
 	var title = "";
 	var url = "";
 	var $;
 	var layer;
-	layui.use([ 'jquery', 'table', 'layer', 'form', 'laydate' ],
+	layui.use([ 'jquery', 'table', 'layer', 'form', 'laydate' ,'common'],
 			function() {
+			var common = layui.common,
+			form = layui.form;
+			//do something...
+			//三级地址联动
+			common.showCity('province', 'city', 'district');
 				// 加载layui模块，使用其推荐的【预先加载】方式，详见官网【模块规范】一节
 				$ = layui.$;
 				var table = layui.table;
@@ -141,6 +161,7 @@
 		        var table_data=new Array();
 				// 显示所有会员
 				table.render({
+					limit:'14',
 					elem : '#member-tab',
 					height : 'full-73',
 					url : '/member/queryByPage',
@@ -245,32 +266,45 @@
 		               }
 		           }
 		        });
+
 				// 添加会员表单提交
-				form.on('submit(meber-form-submit)',
-						function(data) {
-							// ajax方式添加会员
-							$.ajax({
-								url : "/member/" + url,
-								type : "POST",
-								data : data.field,
-								// contentType: 'application/json',
-								dataType : 'json',
-								success : function(data) {
-									if (data.statue == 0) {
-										layer.close(layer.index);
-										layer.msg(data.msg);
-										table.reload('member-tab');
-									} else {
-										layer.msg('添加失败');
-									}
-								},
-								error : function() {
-									console.log("ajax error");
+				form.on('submit(meber-form-submit)',function(data) {
+					var resData = data.field,
+					province = resData.province,
+					city = resData.city,
+					district = resData.district;
+					console.log(province, city, district);
+					// 通过地址code码获取地址名称
+					var address = common.getCity({
+						province, 
+						city,
+						district
+					});
+					//把获取到的三级联动地址追加起来
+					resData.memberAddress = address.provinceName+address.cityName+address.districtName;
+					console.log(address);
+						// ajax方式添加会员
+						$.ajax({
+							url : "/member/" + url,
+							type : "get",
+							data : resData,
+							dataType : 'json',
+							success : function(data) {
+								if (data.statue == 0) {
+									layer.close(layer.index);
+									layer.msg(data.msg);
+									table.reload('member-tab');
+								} else {
+									layer.msg('添加失败');
 								}
-							});
-							// 阻止表单跳转
-							return false;
+							},
+							error : function() {
+								console.log("ajax error");
+							}
 						});
+						// 阻止表单跳转
+						return false;
+				});
 
 				// 监听行工具栏事件：删除会员与更新会员
 				table.on('tool(member-tab)', function(obj) {
@@ -415,22 +449,6 @@
 		return flag;
 	}
 	
-	//config的设置是全局的
-	layui.config({
-		base: '../static/picker/' //假设这是你存放拓展模块的根目录
-	}).extend({ //设定模块别名
-		common: 'common' //如果 common.js 是在根目录，也可以不用设定别名
-	});
-
-	layui.use(['form', 'common'], function(){
-		var common = layui.common,
-			form = layui.form;
-		//do something...
-		//三级地址联动
-		common.showCity('province', 'city', 'district');
-		
-		
-	});
 	</script>
 </body>
 
