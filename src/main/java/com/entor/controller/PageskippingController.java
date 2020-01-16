@@ -10,21 +10,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+//前台页面跳转Controller
 @Controller
 @RequestMapping("ym")
 public class PageskippingController {
 
+	// 模板视图加载
 	@RequestMapping("/member.html")
-	public ModelAndView loadingpage() {
+	public ModelAndView member() {
 		return new ModelAndView("member");
+	}
+
+	@RequestMapping("/waybill.html")
+	public ModelAndView waybill() {
+		return new ModelAndView("waybill");
 	}
 
 	@RequestMapping("/index")
 	public String index(Map<String, Object> map) {
-		/*
-		 * Subject sub = SecurityUtils.getSubject(); String username =
-		 * sub.getPrincipal().toString(); map.put("username", username);
-		 */
+		Subject sub = SecurityUtils.getSubject();
+		String username = sub.getPrincipal().toString();
+		map.put("username", username);
 		return "/index";
 	}
 
