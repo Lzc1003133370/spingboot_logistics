@@ -9,7 +9,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author 展成
- * @since 2020-01-07
+ * @since 2020-01-17
  */
 public class Goods implements Serializable {
 
@@ -19,11 +19,6 @@ public class Goods implements Serializable {
      * 货物id
      */
     private String goodsId;
-
-    /**
-     * 货物名字
-     */
-    private String goodsName;
 
     /**
      * 货物信息
@@ -36,14 +31,9 @@ public class Goods implements Serializable {
     private String goodsWeight;
 
     /**
-     * 货物收件人
-     */
-    private String goodsAddressee;
-
-    /**
      * 订单id
      */
-    private String orderId;
+    private String waybillId;
 
     /**
      * 发送人id（用户id）
@@ -64,14 +54,6 @@ public class Goods implements Serializable {
         this.goodsId = goodsId;
     }
 
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
-    }
-
     public String getGoodsInformation() {
         return goodsInformation;
     }
@@ -88,20 +70,12 @@ public class Goods implements Serializable {
         this.goodsWeight = goodsWeight;
     }
 
-    public String getGoodsAddressee() {
-        return goodsAddressee;
+    public String getWaybillId() {
+        return waybillId;
     }
 
-    public void setGoodsAddressee(String goodsAddressee) {
-        this.goodsAddressee = goodsAddressee;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setWaybillId(String waybillId) {
+        this.waybillId = waybillId;
     }
 
     public String getSenderId() {
@@ -124,11 +98,9 @@ public class Goods implements Serializable {
     public String toString() {
         return "Goods{" +
         "goodsId=" + goodsId +
-        ", goodsName=" + goodsName +
         ", goodsInformation=" + goodsInformation +
         ", goodsWeight=" + goodsWeight +
-        ", goodsAddressee=" + goodsAddressee +
-        ", orderId=" + orderId +
+        ", waybillId=" + waybillId +
         ", senderId=" + senderId +
         ", createTime=" + createTime +
         "}";
